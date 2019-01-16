@@ -1,43 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SchoolActivationSchedule.Models;
+using SchoolActivationSchedule.ViewModels;
 
 namespace SchoolActivationSchedule.Controllers
 {
     public class HomeController : Controller
     {
+
+        private readonly IPieRepository _pieRepository;
+
+        public HomeController(IPieRepository pieRepository)
+        {
+            _pieRepository = pieRepository;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            ViewBag.Title = "Pie overview";
+
+            var pies = _pieRepository.GetAllPies().OrderBy(p => p.Name);
+
+            var homeViewModel = new HomeViewModel()
+            {
+                Pies = pies.ToList(),
+                Title = "Welcome to Bethany's Pie Shop"
+            };
+
+            return View(homeViewModel);
         }
 
-        public IActionResult About()
+        public IActionResult Details(int id)
         {
-            ViewData["Message"] = "Your application description page.";
+            var pie = _pieRepository.GetPieById(id);
+            if (pie == null)
+                return NotFound();
 
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(pie);
         }
     }
 }

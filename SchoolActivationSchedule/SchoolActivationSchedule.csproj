@@ -8,4 +8,21 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="AdminLTE-2.4.5\package.json" />
+    <Content Remove="Views\Account\Login.cshtml" />
+    <Content Remove="Views\Feedback\FeedbackComplete.cshtml" />
+    <Content Remove="Views\Feedback\Index.cshtml" />
+    <Content Remove="Views\Home\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="AdminLTE-2.4.5\.DS_Store" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\HomeController.cs" />
+  </ItemGroup>
 </Project>
